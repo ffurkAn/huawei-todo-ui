@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import LoginForm from './containers/LoginForm';
+import { Switch } from "react-router-dom";
+import { Router, Route, Redirect, browserHistory } from "react-router";
+import LoginForm from './pages/Login/LoginContainer';
+import List from './pages/ToDoList/ToDoListContainer';
+import { Provider } from 'react-redux';
+import store from './store';
 
 class App extends Component {
   render() {
     return (
-      <Router>
-          <Route path="/login" component={LoginForm} />
-      </Router>
+      <Provider store={store}>
+        <Router history={browserHistory}>
+          <Switch>
+            <Route path="/login" component={LoginForm} />
+            <Route path="/list" component={List} />
+          </Switch>
+        </Router>
+      </Provider>
 
     );
   }

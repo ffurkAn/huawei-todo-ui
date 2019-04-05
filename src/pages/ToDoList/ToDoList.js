@@ -1,0 +1,182 @@
+import React, { Component } from "react";
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import "../../styles/table-basic.css";
+import { Form, Field, reduxForm, change } from "redux-form";
+
+
+class ToDoList extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.goToItems = this.goToItems.bind(this);
+        this.addNewItem = this.addNewItem.bind(this);
+
+    }
+
+    componentDidMount() {
+        this.props.onLoadToDoList(this.props.loggedInUserEmail);
+    }
+
+    goToItems(listObjId) {
+
+        this.props.onSetSelectedList(listObjId);
+
+        //this.props.onSelectedList(listObjId);
+    }
+
+    addNewItem(selectedList){
+
+    }
+
+
+    render() {
+
+        const { listOfToDoList, selectedListOid, onBack } = this.props;
+
+        return (
+            selectedListOid ?
+
+                <div>
+                    <h1>{listOfToDoList.filter((listItem, i) => selectedListOid === listItem.objId)[0].name}</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                listOfToDoList.filter((listItem, i) => selectedListOid === listItem.objId)[0].items.map((toDoItem, i) =>{
+
+                                    return <tr key="i">
+                                        <td style={{ display: "none" }}>
+                                            {toDoItem.objId}
+                                        </td>
+                                        <td>
+                                            {toDoItem.name}
+                                        </td>
+                                        <td>
+                                            {toDoItem.description}
+                                        </td>
+                                        <td>
+                                            {toDoItem.deadline}
+                                        </td>
+                                        <td>
+                                            {toDoItem.status === 'Y' ? 'DONE' : 'UNDONE'}
+                                        </td>
+                                        <td>
+                                            <button
+                                                name="btnAddItem"
+                                                type="button"
+                                                onClick={() => { }}
+                                            >
+                                                Mark as Done!
+                                        </button>
+
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                name="btnDeleteItem"
+                                                type="button"
+                                                onClick={() => {}}
+                                            >
+                                            Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+
+                    </table>
+
+                    <button
+                        name="btnBack"
+                        onClick={onBack}
+                    >
+                        Back
+                    </button>
+                    <button
+                        name="btnAddNewItem"
+                        onClick={() => this.addNewItem(selectedListOid)}
+                    >
+                        Add New Item
+                    </button>
+                </div>
+                :
+
+                <div>
+                    <h1>TO-DO LISTS</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                listOfToDoList.map((listItem, i) => {
+
+                                    return <tr key="i">
+                                        <td style={{ display: "none" }}>
+                                            {listItem.objId}
+                                        </td>
+                                        <td>
+                                            {listItem.name}
+                                        </td>
+                                        <td>
+                                            <button
+                                                id="btnAddItem"
+                                                type="button"
+                                                onClick={() => { this.goToItems(listItem.objId); }}
+                                            >
+                                                See Items
+                                        </button>
+
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                name="btnDeleteItem"
+                                                type="button"
+                                                onClick={() => {}}
+                                            >
+                                            Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+
+                    </table>
+                    <button
+                        name="btnAddNewItem"
+                        onClick={() => this.addNewItem(selectedListOid)}
+                    >
+                        Add New List
+                    </button>
+
+                    <NewListBox>
+                        
+                    </NewListBox>
+                    
+                </div>
+        )
+    }
+}
+
+export default reduxForm({
+    form: "toDoListForm",
+    enableReinitialize: true
+})(ToDoList)

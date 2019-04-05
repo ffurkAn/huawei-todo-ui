@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import "../styles/todo.css";
-import * as CommonActions from '../actions/CommonActions';
+import "../../styles/todo.css";
+import { Form, Field, reduxForm, change} from "redux-form";
+import * as Pages from '../../constants/Pages'
 
-export default class Login extends Component {
+var email = "";
+var password= "";
+
+class LoginForm extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      email: "",
-      password: "",
-      isRegistered: true
-    };
-  }
-
-  validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    this.login = this.login.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.changePageToSignUp = this.changePageToSignUp.bind(this);
+    this.signUp = this.signUp.bind(this);
   }
 
   handleChange = event => {
@@ -30,9 +28,11 @@ export default class Login extends Component {
     postData['email'] = this.state.email;
     postData['password'] = this.state.password;
 
-    CommonActions.login(postData, function () {
-      console.log("logged in");
+    // TODO sayfayı değiştir
+    this.props.onLogin(postData,()=>{
+      Pages.goto(Pages.LIST);
     });
+
   }
 
   signUp = (e) => {
@@ -40,22 +40,30 @@ export default class Login extends Component {
     postData['email'] = this.state.email;
     postData['password'] = this.state.password;
 
-    CommonActions.signUp(postData, function () {
+    this.props.onSignUp(postData);
+    /* CommonActions.signUp(postData, () => {
+      this.props.history.push('/home')
       console.log("signed up");
-    });
+    }); */
   }
 
   changePageToSignUp = (flag) => {
 
-    this.setState({
-      isRegistered:!flag
-    })
+    this.props.onFlagChanged(!flag);
+    
+    /* this.setState({
+      isRegistered: !flag
+    }) */
   }
 
   render() {
 
+    const { isRegisteredFlag, email, password } = this.props;
+
+
     return (
-      this.state.isRegistered ?
+      isRegisteredFlag ?
+
         <div className="Login">
           <h2>Login</h2>
           <FormGroup controlId="email" bsSize="large">
@@ -63,14 +71,14 @@ export default class Login extends Component {
             <FormControl
               autoFocus
               type="email"
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
             />
           </FormGroup>
           <FormGroup controlId="password" bsSize="large">
             <ControlLabel>Password</ControlLabel>
             <FormControl
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
               type="password"
             />
@@ -78,7 +86,6 @@ export default class Login extends Component {
           <Button
             block
             bsSize="large"
-            disabled={!this.validateForm()}
             type="submit"
             onClick={(e) => { this.login(e); }}
           >
@@ -103,14 +110,14 @@ export default class Login extends Component {
             <FormControl
               autoFocus
               type="email"
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
             />
           </FormGroup>
           <FormGroup controlId="password" bsSize="large">
             <ControlLabel>Password</ControlLabel>
             <FormControl
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
               type="password"
             />
@@ -118,7 +125,6 @@ export default class Login extends Component {
           <Button
             block
             bsSize="large"
-            disabled={!this.validateForm()}
             type="submit"
             onClick={(e) => { this.signUp(e); }}
           >
@@ -138,3 +144,8 @@ export default class Login extends Component {
 
   }
 }
+
+export default reduxForm({
+  form: "loginForm",
+  enableReinitialize: true
+})(LoginForm)

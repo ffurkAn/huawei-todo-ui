@@ -1,7 +1,7 @@
-import { BrowserHistory }           from 'react-router-dom';
+import { browserHistory }           from 'react-router';
 
-export const HOME                   = '/home';
+export const LIST                   = '/list';
 export const LOGIN                  = '/login';
 
 
-export const goto = (path) => {BrowserHistory.push(path)};
+export const goto = (path) => {browserHistory.push(path)};
