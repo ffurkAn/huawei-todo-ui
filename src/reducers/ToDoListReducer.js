@@ -18,7 +18,11 @@ export const todo = (state = initialState, action) => {
         case "GO_BACK":
             return Immutable.Map(state).set('selectedListOid', action.selectedListOid).toJS();
             break;
-            
+
+        case "NEW_LIST_POPUP_OPEN":
+            return Immutable.Map(state).set('isNewListPopupOpen', action.isOpen).toJS();
+            break;
+
         default:
             return state;
     }

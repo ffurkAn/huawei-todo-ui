@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "../../styles/table-basic.css";
 import { Form, Field, reduxForm, change } from "redux-form";
+import NewListBox from "../../components/NewListBox";
 
 
 class ToDoList extends Component {
@@ -12,6 +13,9 @@ class ToDoList extends Component {
 
         this.goToItems = this.goToItems.bind(this);
         this.addNewItem = this.addNewItem.bind(this);
+        this.togglePopup = this.togglePopup.bind(this);
+        this.addNewList = this.addNewList.bind(this);
+
 
     }
 
@@ -26,14 +30,21 @@ class ToDoList extends Component {
         //this.props.onSelectedList(listObjId);
     }
 
-    addNewItem(selectedList){
+    addNewList() {
+        this.props.showNewListPopup(true);
+    }
+
+    togglePopup() {
+        this.props.showNewListPopup(false);
+    }
+
+    addNewItem() {
 
     }
 
-
     render() {
 
-        const { listOfToDoList, selectedListOid, onBack } = this.props;
+        const { listOfToDoList, selectedListOid, onBack, isNewListPopupOpen } = this.props;
 
         return (
             selectedListOid ?
@@ -53,7 +64,7 @@ class ToDoList extends Component {
                         </thead>
                         <tbody>
                             {
-                                listOfToDoList.filter((listItem, i) => selectedListOid === listItem.objId)[0].items.map((toDoItem, i) =>{
+                                listOfToDoList.filter((listItem, i) => selectedListOid === listItem.objId)[0].items.map((toDoItem, i) => {
 
                                     return <tr key="i">
                                         <td style={{ display: "none" }}>
@@ -86,9 +97,9 @@ class ToDoList extends Component {
                                             <button
                                                 name="btnDeleteItem"
                                                 type="button"
-                                                onClick={() => {}}
+                                                onClick={() => { }}
                                             >
-                                            Delete
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -149,9 +160,9 @@ class ToDoList extends Component {
                                             <button
                                                 name="btnDeleteItem"
                                                 type="button"
-                                                onClick={() => {}}
+                                                onClick={() => { }}
                                             >
-                                            Delete
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -162,15 +173,16 @@ class ToDoList extends Component {
                     </table>
                     <button
                         name="btnAddNewItem"
-                        onClick={() => this.addNewItem(selectedListOid)}
+                        onClick={() => this.addNewList()}
                     >
                         Add New List
                     </button>
 
-                    <NewListBox>
-                        
+                    <NewListBox
+                        closePopup={() => this.togglePopup()}
+                    >
                     </NewListBox>
-                    
+
                 </div>
         )
     }
