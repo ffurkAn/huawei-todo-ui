@@ -4,6 +4,8 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import "../../styles/table-basic.css";
 import { Form, Field, reduxForm, change } from "redux-form";
 import NewListBox from "../../components/NewListBox";
+import NewItemBox from "../../components/NewItemBox";
+
 
 
 class ToDoList extends Component {
@@ -39,7 +41,11 @@ class ToDoList extends Component {
     }
 
     addNewItem() {
+        this.props.showNewItemPopup(true);
+    }
 
+    toggleItemPopup(){
+        this.props.showNewItemPopup(false);
     }
 
     render() {
@@ -117,10 +123,14 @@ class ToDoList extends Component {
                     </button>
                     <button
                         name="btnAddNewItem"
-                        onClick={() => this.addNewItem(selectedListOid)}
+                        onClick={() => this.addNewItem()}
                     >
                         Add New Item
                     </button>
+                    <NewItemBox
+                        closePopup={() => this.toggleItemPopup()}
+                    >
+                    </NewItemBox>
                 </div>
                 :
 

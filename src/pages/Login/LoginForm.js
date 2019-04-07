@@ -28,7 +28,6 @@ class LoginForm extends Component {
     postData['email'] = this.state.email;
     postData['password'] = this.state.password;
 
-    // TODO sayfayı değiştir
     this.props.onLogin(postData,()=>{
       Pages.goto(Pages.LIST);
     });
@@ -40,7 +39,9 @@ class LoginForm extends Component {
     postData['email'] = this.state.email;
     postData['password'] = this.state.password;
 
-    this.props.onSignUp(postData);
+    this.props.onSignUp(postData,()=>{
+      Pages.goto(Pages.LIST);
+    });
     /* CommonActions.signUp(postData, () => {
       this.props.history.push('/home')
       console.log("signed up");

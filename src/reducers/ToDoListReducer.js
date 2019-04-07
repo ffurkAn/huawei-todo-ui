@@ -23,6 +23,11 @@ export const todo = (state = initialState, action) => {
             return Immutable.Map(state).set('isNewListPopupOpen', action.isOpen).toJS();
             break;
 
+        case "NEW_ITEM_POPUP_OPEN":
+            return Immutable.Map(state).set('isNewItemPopupOpen', action.isOpen).toJS();
+            break;
+
+
         default:
             return state;
     }

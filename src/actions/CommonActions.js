@@ -4,10 +4,13 @@ import store from "../store";
 
 
 export function signUp(entity, cb){
+   return dispatch => {
     RestUtil.fetchPOST(URI.SIGN_UP_URL ,entity, (response) => {
         console.log("new user signedup: " + response.email);
-        cb();
+        dispatch({type: "LOGIN", email: response.email});
+        cb()
     });
+   }
 }
 
 export function login(entity, cb){
@@ -63,4 +66,19 @@ export function saveNewList(postData){
         })
     }
 
+}
+
+export function showNewItemPopup(flag){
+    return dispatch =>{
+        dispatch({type: "NEW_ITEM_POPUP_OPEN", isOpen: flag})
+    }
+}
+
+export function saveNewItem(postData){
+    return dispatch => {
+        RestUtil.fetchPOST(URI.SAVE_NEW_ITEM, postData, () => {
+            dispatch({type: "NEW_ITEM_POPUP_OPEN", isOpen: false});
+            store.dispatch(getToDoList(postData.userEmail));
+        })
+    }
 }

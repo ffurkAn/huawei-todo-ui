@@ -5,7 +5,8 @@ import {
     getToDoList,
     setSelectedList,
     onBack,
-    showNewListPopup
+    showNewListPopup,
+    showNewItemPopup
 } from "../../actions/CommonActions";
 
 class ToDoItemContainer extends Component{
@@ -15,7 +16,8 @@ class ToDoItemContainer extends Component{
 
     render(){
 
-        const {listOfToDoList, email, getToDoList, setSelectedList, selectedListOid, onBack, showNewListPopup, isNewListPopupOpen} = this.props;
+        const {listOfToDoList, email, getToDoList, setSelectedList, selectedListOid, onBack, showNewListPopup,
+             isNewListPopupOpen, isNewItemPopupOpen, showNewItemPopup} = this.props;
 
 
         return (
@@ -28,6 +30,8 @@ class ToDoItemContainer extends Component{
                 onBack = { onBack }
                 showNewListPopup = {showNewListPopup}
                 isNewListPopupOpen = { isNewListPopupOpen }
+                showNewItemPopup = {showNewItemPopup}
+                isNewItemPopupOpen = { isNewItemPopupOpen }
             />
         )
     }
@@ -38,7 +42,8 @@ const mapStateToProps = (state) => {
         listOfToDoList : state.todo.listOfToDoList,
         email          : state.common.email,
         selectedListOid    : state.todo.selectedListOid,
-        isNewListPopupOpen      : state.todo.isNewListPopupOpen
+        isNewListPopupOpen      : state.todo.isNewListPopupOpen,
+        isNewItemPopupOpen      : state.todo.isNewItemPopupOpen
 
     }
 }
@@ -48,5 +53,6 @@ export default connect(mapStateToProps,
         getToDoList,
         setSelectedList,
         onBack,
-        showNewListPopup
+        showNewListPopup,
+        showNewItemPopup
     })(ToDoItemContainer)
